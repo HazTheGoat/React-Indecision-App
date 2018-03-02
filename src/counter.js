@@ -1,5 +1,5 @@
 class Counter extends React.Component{
-    constructor(){
+    constructor(props){
         super();
 
         this.handlePlusOne = this.handlePlusOne.bind(this);
@@ -7,9 +7,11 @@ class Counter extends React.Component{
         this.handleReset = this.handleReset.bind(this);
 
         this.state = {
-            count: 0
+            defaultCount: props.count,
+            count: props.count
         }
     }
+
     handlePlusOne(){
         console.log("child was clicked")
         this.setState((prevState) => {
@@ -18,6 +20,7 @@ class Counter extends React.Component{
             }
         })
     }
+    
     handleMinusOne(){
         this.setState((prevState) => {
             return {
@@ -25,13 +28,15 @@ class Counter extends React.Component{
             }
         })
     }
+
     handleReset(){
         this.setState(() => {
             return {
-                count: 0
+                count: this.state.defaultCount
             }
         })
     }
+
     render(){
         return(
             <div>
@@ -44,21 +49,14 @@ class Counter extends React.Component{
     }
 }
 
-class AddOne extends React.Component{
-    constructor(){
-        super();
-        this.handlePlusOne = this.handlePlusOne.bind(this);
-    }
-
-    handlePlusOne(){
-        this.props.handlePlusOne();
-    }
-    
-    render(){
-        return(
-            <button onClick={this.handlePlusOne}>+1</button>
-        )
-    }
+Counter.defaultProps = {
+    count: 0
 }
 
-ReactDOM.render(<Counter />, document.getElementById("app"))
+const AddOne = (props) => {
+    return(
+        <button onClick={ props.handlePlusOne }>+1</button>
+    )
+}
+
+ReactDOM.render(<Counter count={20} />, document.getElementById("app"))
