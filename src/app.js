@@ -6,6 +6,7 @@ class IndecisionApp extends React.Component{
         this.handleAddOption = this.handleAddOption.bind(this);
         this.handlePick = this.handlePick.bind(this);
         this.handleRemoveAll = this.handleRemoveAll.bind(this);
+        this.handleRemoveOption = this.handleRemoveOption.bind(this);
 
         this.state = {
             title: "Indecision App",
@@ -14,8 +15,8 @@ class IndecisionApp extends React.Component{
         }
     }
     
-    handleRemoveOption(){
-
+    handleRemoveOption(e){
+        this.setState((prevState) => ({ options: prevState.options.filter((option, i) => i != e)}))
     }
 
     handleRemoveAll() {
@@ -42,7 +43,7 @@ class IndecisionApp extends React.Component{
             <div>
                 <Header subTitle={ this.state.subTitle } />
                 <Action handlePick={ this.handlePick } hasOptions={ this.state.options.length > 0 ? true : false}/>
-                <Options handleRemoveAll={ this.handleRemoveAll } options={ this.state.options } />
+                <Options handleRemoveOption={ this.handleRemoveOption } handleRemoveAll={ this.handleRemoveAll } options={ this.state.options } />
                 <AddOption handleAddOption={ this.handleAddOption } />
             </div>
         )
@@ -78,7 +79,7 @@ const Options = (props) => {
     return (
         <div>
             <button onClick={props.handleRemoveAll }>Remove All</button>
-            { props.options.map((option, i) => <Option key={i} option={option} />)}
+            { props.options.map((option, i) => <Option key={i} handleRemoveOption={ props.handleRemoveOption } index={i} option={option} />)}
         </div>
     )
 }
@@ -87,6 +88,9 @@ const Option = (props) => {
     return (
         <div>
             { props.option }
+            <button onClick={() => {
+                props.handleRemoveOption(props.index)
+            }}>remove</button>
         </div>
     )
 }
