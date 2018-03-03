@@ -16,12 +16,15 @@ var IndecisionApp = function (_React$Component) {
     function IndecisionApp(props) {
         _classCallCheck(this, IndecisionApp);
 
+        console.log("Constructor initiated");
+
         var _this = _possibleConstructorReturn(this, (IndecisionApp.__proto__ || Object.getPrototypeOf(IndecisionApp)).call(this));
 
         _this.handleAddOption = _this.handleAddOption.bind(_this);
         _this.handlePick = _this.handlePick.bind(_this);
         _this.handleRemoveAll = _this.handleRemoveAll.bind(_this);
         _this.handleRemoveOption = _this.handleRemoveOption.bind(_this);
+        _this.updateOptionsLocalStorage = _this.updateOptionsLocalStorage.bind(_this);
 
         _this.state = {
             title: "Indecision App",
@@ -32,6 +35,34 @@ var IndecisionApp = function (_React$Component) {
     }
 
     _createClass(IndecisionApp, [{
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            try {
+                var options = JSON.parse(localStorage.getItem("options"));
+                if (options) {
+                    this.setState(function () {
+                        return { options: options };
+                    });
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    }, {
+        key: "componentDidUpdate",
+        value: function componentDidUpdate(prevProps, prevState) {
+            // Update localstorage
+            if (this.state.options.length != prevState.options.length) {
+                this.updateOptionsLocalStorage();
+            }
+        }
+    }, {
+        key: "updateOptionsLocalStorage",
+        value: function updateOptionsLocalStorage() {
+            var options = JSON.stringify(this.state.options);
+            localStorage.setItem("options", options);
+        }
+    }, {
         key: "handleRemoveOption",
         value: function handleRemoveOption(e) {
             this.setState(function (prevState) {
@@ -129,6 +160,11 @@ var Options = function Options(props) {
             { onClick: props.handleRemoveAll },
             "Remove All"
         ),
+        props.options.length === 0 && React.createElement(
+            "p",
+            null,
+            "Please add an option to get started"
+        ),
         props.options.map(function (option, i) {
             return React.createElement(Option, { key: i, handleRemoveOption: props.handleRemoveOption, index: i, option: option });
         })
@@ -177,7 +213,10 @@ var AddOption = function (_React$Component2) {
             this.setState(function () {
                 return { errorMessage: errorMessage };
             });
-            e.target.reset();
+
+            if (!errorMessage) {
+                e.target.reset();
+            }
         }
     }, {
         key: "render",
