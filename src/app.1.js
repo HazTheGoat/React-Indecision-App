@@ -1,6 +1,3 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-
 // babel src/app.js --out-file=public/scripts/app.js --presets=env,react
 
 class IndecisionApp extends React.Component{
