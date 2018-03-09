@@ -1,8 +1,9 @@
-import AddOption from './components/addoption';
-import Option from './components/option';
-import Options from './components/options';
-import Header from './components/header';
-import Action from './components/action';
+import React from 'react';
+import AddOption from './addoption';
+import Option from './option';
+import Options from './options';
+import Header from './header';
+import Action from './action';
 
 class IndecisionApp extends React.Component{
     constructor(props){
