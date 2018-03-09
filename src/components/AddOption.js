@@ -1,17 +1,11 @@
 import React from 'react';
 
 export default class AddOption extends React.Component {
-    constructor(){
-        super();
-
-        this.handleAddOption = this.handleAddOption.bind(this);
-
-        this.state = {
-            errorMessage: ''
-        }
+    state = {
+        errorMessage: ''
     }
 
-    handleAddOption(e){
+    handleAddOption = (e) => {
         e.preventDefault();
 
         const option = e.target.elements.option.value.trim();
